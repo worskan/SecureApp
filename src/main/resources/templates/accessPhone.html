@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="addPhone" method="post">
+		<input type="hidden" th:value="${username}" name="username"	id="username"> <br>
+		 전화번호 <input type="text" name="other_phone" id="other_phone"><br>
+		<button >추가하기</button>
+	</form>
+</body>
+</html>

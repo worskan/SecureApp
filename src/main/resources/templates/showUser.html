@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+	<div th:each="user:${username}">
+		<input type="hidden" th:value="${user.username}" id="username"/> 
+		회원 아이디: <a th:text="${user.username}"></a><br>
+		전화번호: <a th:text="${user.phone}"></a>
+	<br>
+	</div>
+	<a href="/">메인</a>
+	<a href="logout">로그아웃</a>
+	<button id="accessPhone" onclick="accessPhone();">전화번호 추가하기</button>
+
+	<script type="text/javascript">
+		function accessPhone() {
+			var username = document.getElementById('username').value;
+			window.open("accessPhone?username=" + username, "전화번호 추가",
+					"width=400, height=300, left=100, top=50");
+		}
+	</script>
+</body>
+</html>
