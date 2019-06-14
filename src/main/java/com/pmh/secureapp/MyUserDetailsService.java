@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.pmh.Domains.Account;
+import com.pmh.Repositories.AccountRepository;
+
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
