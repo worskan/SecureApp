@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PhoneServiceImpl{
+public class BoardService{
 
 	@Autowired
-	private PhoneRepository Prepo;
-
-
-	@Transactional
-	public void getPhones(Phone phone) {
-		Prepo.saveAndFlush(phone);
+	private boardRepository Brepo;
+	
+	public void inputContent(Board board) {
+		Brepo.save(board);
 	}
-
 	
-	
+	public List<Board> allContent() {
+		
+		return Brepo.findAll();
+	}
 }

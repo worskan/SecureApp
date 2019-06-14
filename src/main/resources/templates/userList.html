@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>여기는 회원정보 페이지입니다</h1>
+	<table style="border: 1px;">
+		<tr>
+			<td>사용자 이름</td>
+		</tr>
+		<a th:each="user:${userList}">
+			<tr>
+				<td><a th:href="@{showUser(username=${user.username})}"
+					th:text="${user.username}"></a></td>
+			</tr>
+		</a>
+
+
+	</table>
+	<a href="/"><button>메인페이지</button></a>
+	<a href="logout"><button>로그아웃</button></a>
+</body>
+</html>

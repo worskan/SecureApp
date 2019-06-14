@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegistServiceImpl {
+public class RegistService {
 
 	@Autowired
 	private AccountRepository Arepo;
@@ -22,10 +22,6 @@ public class RegistServiceImpl {
 		return Arepo.findByUsername(username);
 	}
 
-	public void getPhones(Phone phone) {
-		Prepo.save(phone);
-//		tMapper.getPhones(phone);
-	}
 
 	public List<Account> userList() {
 		return Arepo.findAll();

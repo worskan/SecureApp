@@ -5,19 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<table style="border: 1px;">
-		<tr>
-			<td>사용자 이름</td>
-		</tr>
-		<a th:each="user:${userList}">
-		<tr>
-			<td><a th:href="@{showUser(username=${user.username})}"
-				th:text="${user.username}"></a></td>
-		</tr>
-		</a>
+	<h1>여기는 메인페이지</h1>
 
+	<br>
 
-	</table>
-	<a href="logout">로그아웃</a>
+	<a href="boardList"><button type="button">게시판</button></a>
+	<a href="userList"><button type="button">회원정보</button></a>
+	<a href="logout"><button type="button">로그아웃</button></a>
 </body>
 </html>
