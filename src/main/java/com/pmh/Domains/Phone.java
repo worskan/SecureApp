@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import groovy.transform.ToString;
 
 @Entity
 @Table(name = "phone")
+@SequenceGenerator(name = "phone_SEQ_GENERATOR",sequenceName = "phone_SEQ",initialValue = 1,allocationSize = 1)
 public class Phone {
 
 
 	@Id
 	@Column(name = "pnum")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "phone_SEQ_GENERATOR")
 	private int pnum;
 
 	@Column(name = "username")

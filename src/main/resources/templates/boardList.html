@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<h1>여기가 게시판 목록입니다</h1>
@@ -13,21 +16,36 @@
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr>
-					<td style="width:5%">게시글 번호</td>
-					<td style="width:60%">제목</td>
-					<td style="width:5%">작성자</td>
-				</tr> 
+					<td style="width: 5%">게시글 번호</td>
+					<td style="width: 60%">내용</td>
+					<td style="width: 5%">작성자</td>
+				</tr>
 			</thead>
-	
-			<tbody th:each="board:${board}">
+
+			<tbody th:each="board:${boardPage}">
 				<tr>
-					<td><a th:text="${board.title}"></a></td>
-					<td><a th:text="${board.content}"></a></td>
+					<td><a th:text="${board.bno}"></a></td>
+					<td><a th:href="@{/BView(bno=${board.bno})}"
+						th:text="${board.title}"></a></td>
 					<td><a th:text="${board.username}"></a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+
+	<!-- 게시판 페이지네이션 -->
+	<nav style="text-align: center;">
+		<ul class="pager">
+			<li class="Previous"><a
+				th:href="@{boardList(page=${boardPage.number-1})}"
+				aria-label="Previous"> <span aria-hidden="true">&lt;</span>
+			</a></li>
+
+			<li class="Next"><a
+				th:href="@{boardList(page=${boardPage.number+1})}" aria-label="Next">
+					<span aria-hidden="true">&gt;</span>
+			</a></li>
+	</nav>
 	<a href="boardInputView"><button>게시글 작성</button></a>
 	<a href="/"><button>메인페이지</button></a>
 </body>

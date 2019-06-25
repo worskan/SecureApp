@@ -29,30 +29,30 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping("userList")
+	@RequestMapping("userList") //모든 사용자의 정보 리스트
 	public void userList(Model model) {
 		List<Account> userList = service.userList();
 		model.addAttribute("userList", userList);
 	}
 
-	@RequestMapping("/login")
+	@RequestMapping("/login") //로그ㅡ인 페이지
 	public String loginPage(AccountPrincipal Apcal) {
 
 		return "login";
 	}
 
-	@RequestMapping("/logout")
+	@RequestMapping("/logout") //로그아웃 페이지
 	public void logoutPage() {
 	}
 
-	@RequestMapping("/logout-success")
+	@RequestMapping("/logout-success") //로그인 성공 페이지
 	public void logoutSuccess(String username) {
 	}
 	
 	
 	 //차후 로그인한 유저가 추가할수 있게끔 변경
 	 //현재 누구나 연락처 추가 가능
-	@GetMapping("showUser")
+	@GetMapping("showUser" ) //사용자의 상세정보
 	public void showUser(String username, Model model) {
 		Account account = service.findByUsername(username);
 		model.addAttribute("username", account);

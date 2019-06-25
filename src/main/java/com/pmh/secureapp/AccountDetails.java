@@ -10,5 +10,5 @@ public class AccountDetails extends User {
 	public AccountDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
-	
+
 }

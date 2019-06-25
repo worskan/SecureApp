@@ -47,12 +47,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.clearAuthentication(true)
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 			.logoutSuccessUrl("/logout-success").permitAll();
-		
-		
+			
 	}
 
-	
-	
 //	@Bean
 //	@Override
 //	protected UserDetailsService userDetailsService() {

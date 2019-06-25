@@ -23,11 +23,11 @@ public class registController {
 	@Autowired
 	private RegistService service;
 
-	@RequestMapping("/regist")
+	@RequestMapping("/regist") //회원가입 페이지
 	public void registPage() {
 	}
 
-	@PostMapping("/registRst")
+	@PostMapping("/registRst")//회원가입 처리
 	public String registProcess(Account account, String username, String password) {
 		System.out.println("아이디: " + username);
 		System.out.println("비밀번호: " + password);

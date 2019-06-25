@@ -30,13 +30,13 @@ public class PhoneController {
 
 
 
-	@RequestMapping("/accessPhone")
+	@RequestMapping("/accessPhone") //전화번호 추가 과정
 	public void accessPhone(String username, Model model) {
 		model.addAttribute("username", username);
 
 	}
 
-	@PostMapping("/addPhone")
+	@PostMapping("/addPhone") //전화번호 추가
 	public String addPhone(String username, String other_phone) {
 		Phone phone = new Phone();
 		Account account = aservice.findByUsername(username);
