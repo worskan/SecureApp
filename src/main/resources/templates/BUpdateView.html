@@ -14,8 +14,8 @@
 			ID: <input type="text" th:value="${updateCon.username}" name="username" readonly="readonly"><br>
 		</a>
 			<a href="boardList"><button type="button">리스트</button></a>
-			<a href="/"><button type="button">메인페이지</button></a>
 			<input type="submit" value="수정하기">
+			<a  th:href="${refere}"><input type="button" value="취소"></a>
 	</form>
 </body>
 </html>

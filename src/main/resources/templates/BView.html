@@ -6,11 +6,12 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
+
 </head>
 <body>
 	<table>
 		<tbody th:each="boardCon:${boardCon}">
-			<input type="hidden" th:value="${boardCon.bno}" id="bno">
+			<input type="hidden" th:value="${boardCon.bno}" id="bno"/>
 			<tr>
 				<td>글번호</td>
 				<td th:text="${boardCon.bno}"></td>
@@ -30,49 +31,33 @@
 			<tr>
 				<td><a href="boardList"><button type="button">리스트</button></a></td>
 				<td><a href="/"><button type="button">메인페이지</button></a></td>
-				<td><a th:href="@{/BDel(bno=${boardCon.bno})}"><input
-						type="button" value="삭제"></a></td>
-				<td><a th:href="@{/BUpdateView(bno=${boardCon.bno})}"><button
-							type="button">수정</button></a></td>
+				<td><a th:href="@{/BDel(bno=${boardCon.bno})}"><input type="button" value="삭제"></a></td>
+				<td><a th:href="@{/BUpdateView(bno=${boardCon.bno})}"><button type="button">수정</button></a></td>
 			</tr>
 		</tbody>
 	</table>
 	<hr>
 
-	<table>
-		<tbody th:each="boardComment:${boardComment}">
-			<tr>
-				<td><input type="hidden" id="cno" th:value="${boardComment.cno}"></td>
+	<div th:each="boardComment:${boardComment}">
+		<div style="border: 1px solid; margin:4px;">
+			댓글 번호<input type="hidden" th:text="${boardComment.cno}" th:value="${boardComment.cno}" name="cno" id="cno"><br>
+			작성자 <a th:text="${boardComment.bcwriter}"></a><input type="hidden"	 name="bcwriter" id="bcwriter" th:value="${boardComment.bcwriter}"><br>
 
-			</tr>
-
-			<tr>
-				<td>작성자</td>
-				<td th:text="${boardComment.bcwriter}"></td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td th:text="${boardComment.bccomment}"></td>
-			</tr>
-			<tr>
-				<td><button onclick="commentUpdate">수정</button></td>
-				<td><button onclick="commentDelete">삭제</button></td>
-			</tr>
-
-		</tbody>
-	</table>
-
-	<form id="commentForm" name="commentForm" method="post">
-		<div>
-			<textarea rows="10" cols="150" placeholder="댓글 내용을 입력해주세요"
-				name="comment" id="comment"></textarea>
-			<input type="submit" onclick="addComment()" value="저장">
+			내용 <a th:text="${boardComment.bccomment}"></a><br>
+			
+			<!--  th:onclick="|javascript:function(data)|를 쓰면 배열인 객체에서도 값을 받아오는게 된다!"  -->
+			<input type="button" value="삭제" th:onclick="|javascript:commentDelete(${boardComment.cno}, ${boardComment.bcwriter})|"/> 
 		</div>
-	</form>
+	</div>
 
+	<div>
+		<textarea rows="10" cols="150" placeholder="댓글 내용을 입력해주세요" name="comment" id="comment"></textarea>
+		<input type="button" onclick="addComment()" value="저장">
+	</div>
+
+<!-- ajax script  -->
 	<script>
-		var bno = document.getElementById("bno").value;
-		var cno = document.getElementById("cno").value;
+			var bno = document.getElementById("bno").value;
 		
 		function addComment() { //댓글 삽입 Ajax
 			var comment = document.getElementById("comment").value;
@@ -80,12 +65,11 @@
 				type : 'post',
 				url : "addComment",
 				data : {
-					bno : bno,
-					bccomment : comment
+					"bno" : bno,
+					"bccomment" : comment
 				},
 				success : function(data) {
-					if (data == "success") {
-					}
+					location.href = data;
 				},
 				error : function(request, status, error) {
 
@@ -94,46 +78,32 @@
 			});
 		}
 
-		function commentUpdate() { //댓글 수정 Ajax
-			
-			alert(cno);
-			/* $.ajax({
-				type : 'post',
-				url:"updateComment",
-				data : {
-					cno : cno,
-					bccomment : bccoment,
-					bcwriter:bcwriter
-				},
-				success:function(data){
-					if(data=="success"){
-						
+	 	function commentDelete(cno, bcwriter) { //댓글 삭제 Ajax
+			 
+	 	 $.ajax({
+					type : 'post',
+					url : "deleteComment",
+					data : {
+						"bno" : bno,
+						"cno" : cno,
+						"bcwriter" : bcwriter
+					},
+					success : function(data) {
+						if(data == "false"){
+							alert("권한이 없습니다");	
+						}
+						else{
+						location.href=data;
+						}
+					},
+					error : function(request, status, error) {
 					}
-				},
-				error:function(request,status,error){
-					alert("권한이 없습니다.");
-				}
-			}); */
-		}	
-		
-		function commentDelete() { //댓글 삭제 Ajax
-			$.ajax({
-				type : 'post',
-				url:"deleteComment",
-				data : {
-					cno : cno,
-					bcwriter:bcwriter
-				},
-				success:function(data){
-					if(data=="success"){
-						
-					}
-				},
-				error:function(request,status,error){
-					alert("권한이 없습니다.");
-				}
-			});
-		}
+				}); 
+
+	 
+		} 
 	</script>
+
+	
 </body>
 </html>

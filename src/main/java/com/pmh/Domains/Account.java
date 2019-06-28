@@ -31,10 +31,34 @@ public class Account {
 	@Id
 	private String username;
 	private String password;
-		
+	private String email;
+	private String email_authCode;
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "username")
 	public Collection<Phone> phone;
+
+	
+	
+	public String getEmail_authCode() {
+		return email_authCode;
+	}
+
+
+	public void setEmail_authCode(String email_authCode) {
+		this.email_authCode = email_authCode;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getUsername() {
 		return username;
@@ -60,5 +84,7 @@ public class Account {
 	public void setPhone(Collection<Phone> phone) {
 		this.phone = phone;
 	}
+
+
 
 }

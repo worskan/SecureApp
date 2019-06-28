@@ -12,6 +12,6 @@ import com.pmh.Domains.Account;
 public interface AccountRepository extends JpaRepository<Account, String> {
 	Account findByUsername(String username);
 	List<Account> findAll(); // List를 뽑을때는 public 쓰지않기
-	
+	Account save(Account account);
 	
 }
