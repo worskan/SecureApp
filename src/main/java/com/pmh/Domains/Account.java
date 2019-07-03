@@ -16,45 +16,51 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import groovy.transform.ToString;
+import net.bytebuddy.implementation.bind.annotation.Default;
 
 @Entity
 @Table(name = "account")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Account {
-	
+
 	@Id
 	private String username;
 	private String password;
 	private String email;
 	private String email_authCode;
 	
-	
+	private String email_status;
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "username")
 	public Collection<Phone> phone;
 
-	
-	
+	public String getEmail_status() {
+		return email_status;
+	}
+
+	public void setEmail_status(String email_status) {
+		this.email_status = email_status;
+	}
+
 	public String getEmail_authCode() {
 		return email_authCode;
 	}
-
 
 	public void setEmail_authCode(String email_authCode) {
 		this.email_authCode = email_authCode;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
-
 
 	public void setEmail(String email) {
 		this.email = email;
@@ -63,7 +69,6 @@ public class Account {
 	public String getUsername() {
 		return username;
 	}
-
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -84,7 +89,5 @@ public class Account {
 	public void setPhone(Collection<Phone> phone) {
 		this.phone = phone;
 	}
-
-
 
 }

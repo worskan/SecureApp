@@ -25,20 +25,23 @@ public class registController {
 
 	@Autowired
 	private RegistService service;
-	
+
 	@Autowired
 	private SendMailService SMService;
 
-	@RequestMapping("/regist") //회원가입 페이지
+	@RequestMapping("/regist") // 회원가입 페이지
 	public void registPage() {
 	}
 
-	@PostMapping("/registRst")//회원가입 처리
-	public String registProcess(Account account, String username, String password, String email,RedirectAttributes rttr) throws Exception {
+	@PostMapping("/registRst") // 회원가입 처리                             
+	public String registProcess(Account account,String username, String password, String email) throws Exception {
+//		Account account = new Account();
+		System.out.println(account.getUsername());
 		System.out.println("아이디: " + username);
 		System.out.println("비밀번호: " + password);
-		
+
 		if ((account = service.findByUsername(account.getUsername())) != null) { // 회원가입시 db에 동일한 아이디가 있을 경우
+			System.out.println("동일 아이디로 가입 확인");
 			return "registFail";
 		} else { // 동일한 아이디가 없을 경우
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -46,12 +49,18 @@ public class registController {
 			account1.setPassword(passwordEncoder.encode(password));
 			account1.setUsername(username);
 			account1.setEmail(email);
-			
-			SMService.sendMail(account1);
-						
+
+//			SMService.sendMail(account1);
+
 			service.regist(account1);
-			rttr.addFlashAttribute("authmsg" , "가입시 사용한 이메일로 인증해주 3");
 			return "registSuccess";
 		}
+	}
+
+	@RequestMapping("/emailConfirm") // 이메일 인증
+	public void emailConfirm(String username, Model model) throws Exception {
+		service.cngEmail_status(username);
+		
+		model.addAttribute("username", username);
 	}
 }

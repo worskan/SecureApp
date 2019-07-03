@@ -1,8 +1,5 @@
 package com.pmh.secureapp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +19,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	
+	
 	@Bean
 	public AuthenticationProvider authProvier() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -35,19 +34,21 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			//로그인 처리부분		
 			.csrf().disable()//개발 초기에만 적용
-			.authorizeRequests().antMatchers("/login","/regist","/registRst").permitAll() //로그인 페이지 및 회원가입 접근 허용
+			.authorizeRequests().antMatchers("/login","/regist","/registRst","/emailConfirm","/login_fail","/logincheck").permitAll() //로그인 페이지 및 회원가입 접근 허용
 			.antMatchers("/registFail","/registSuccess").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
-			.loginPage("/login").permitAll()
+			.loginPage("/login").loginProcessingUrl("/logincheck") //html 안붙혀주면 접근을 못함
+			.usernameParameter("username").passwordParameter("password")
+			.failureUrl("/login").defaultSuccessUrl("/").permitAll()
 			.and()
 			//로그아웃 처리부분
 			.logout().invalidateHttpSession(true)
 			.clearAuthentication(true)
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-			.logoutSuccessUrl("/logout-success").permitAll();
-			
+			.logoutSuccessUrl("/login").permitAll();
+		
 	}
 
 //	@Bean

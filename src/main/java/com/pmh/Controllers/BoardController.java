@@ -77,7 +77,7 @@ public class BoardController {
 		return "redirect:boardList";
 	}
 
-	@RequestMapping("BUpdateView") // 게시글 업데이트 페이지
+	@RequestMapping("BUpdateView") // 게시글 수정 페이지
 	public void BUpViewGet(int bno, Model model, HttpServletRequest request) {
 		String refere = request.getHeader("referer");
 		Board updateCon = bservice.findByBno(bno);
@@ -85,7 +85,7 @@ public class BoardController {
 		model.addAttribute("updateCon", updateCon);
 	}
 
-	@RequestMapping("BUpdate") // 게시글 업데이트
+	@RequestMapping("BUpdate") // 게시글 수정
 	public String BUpdate(int bno, String content, String title, String username) {
 		Board board = new Board();
 		board.setBno(bno);
@@ -139,15 +139,30 @@ public class BoardController {
 		
 	}
 	
-	@RequestMapping("/updateComment") // 댓글 수정
-	public void updateComment(@AuthenticationPrincipal AccountPrincipal APcal, int cno, String bccomment,
-			String bcwriter) {
-		/*
-		 * BoardComment boardComment = new BoardComment(); if (APcal.getUsername() ==
-		 * bcwriter) { } else {
-		 * 
-		 * }
-		 */
+	@RequestMapping("/commentUpdateView") // 댓글 수정 페이지
+	public void commentUpdateView(int cno, Model model, HttpServletRequest request,@AuthenticationPrincipal AccountPrincipal APcal) {
+		String refere = request.getHeader("referer");
+		BoardComment boardComment = BCservice.findByCno(cno);
+		
+		model.addAttribute("refere", refere); //이전 페이지 url
+		model.addAttribute("boardComment", boardComment);
+		
+		
+		
 	}
 
+	@RequestMapping("/BCUpdate") // 댓글 수정 처리
+	public String BCUpdate(String bccomment, int bno, int cno,@AuthenticationPrincipal AccountPrincipal APcal, HttpServletRequest request, Model model) {
+		
+		String refere = request.getHeader("referer");
+		BoardComment boardComment = new BoardComment();
+		boardComment.setBccomment(bccomment);
+		boardComment.setBcwriter(APcal.getUsername());
+		boardComment.setBno(bno);
+		boardComment.setCno(cno);
+		BCservice.commentInsert(boardComment);
+		
+		model.addAttribute("refere", refere);
+		return "redirect:BView?bno="+bno;
+	}
 }

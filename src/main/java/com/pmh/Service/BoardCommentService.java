@@ -37,8 +37,8 @@ public class BoardCommentService {
 	}
 
 	//수정
-	public void findByCno(BoardComment boardComment) {
-		bcrepo.save(boardComment);
+	public BoardComment findByCno(int cno) {
+		return bcrepo.findByCno(cno);
 	}
 	
 	//삭제

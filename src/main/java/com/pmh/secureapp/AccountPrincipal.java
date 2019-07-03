@@ -11,8 +11,9 @@ import com.pmh.Domains.Account;
 
 public class AccountPrincipal implements UserDetails {
 
-	private Account user;
+	public Account user;
 
+	
 	public AccountPrincipal(Account user) {
 		super();
 		this.user = user;

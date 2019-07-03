@@ -2,10 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Insert title here</title>
+
+
 
 </head>
 <body>
@@ -45,7 +50,9 @@
 
 			내용 <a th:text="${boardComment.bccomment}"></a><br>
 			
+			
 			<!--  th:onclick="|javascript:function(data)|를 쓰면 배열인 객체에서도 값을 받아오는게 된다!"  -->
+				<a th:href="@{/commentUpdateView(cno=${boardComment.cno})}"><input type="button" value="수정"></a>
 			<input type="button" value="삭제" th:onclick="|javascript:commentDelete(${boardComment.cno}, ${boardComment.bcwriter})|"/> 
 		</div>
 	</div>
@@ -57,8 +64,8 @@
 
 <!-- ajax script  -->
 	<script>
-			var bno = document.getElementById("bno").value;
-		
+		var bno = document.getElementById("bno").value;
+			
 		function addComment() { //댓글 삽입 Ajax
 			var comment = document.getElementById("comment").value;
 			$.ajax({
@@ -99,9 +106,9 @@
 					error : function(request, status, error) {
 					}
 				}); 
-
-	 
 		} 
+	 	
+		
 	</script>
 
 	
