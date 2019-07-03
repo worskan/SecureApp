@@ -40,7 +40,6 @@ public class HomeController {
 
 	@RequestMapping("userList") // 모든 사용자의 정보 리스트
 	public void userList(Model model, Account account) {
-		System.out.println(account.getEmail_status());
 		List<Account> userList = service.userList();
 		model.addAttribute("userList", userList);
 	}

@@ -11,7 +11,6 @@
 <title>Insert title here</title>
 
 
-
 </head>
 <body>
 	<table>
@@ -36,25 +35,32 @@
 			<tr>
 				<td><a href="boardList"><button type="button">리스트</button></a></td>
 				<td><a href="/"><button type="button">메인페이지</button></a></td>
-				<td><a th:href="@{/BDel(bno=${boardCon.bno})}"><input type="button" value="삭제"></a></td>
-				<td><a th:href="@{/BUpdateView(bno=${boardCon.bno})}"><button type="button">수정</button></a></td>
+				<td><a th:onclick="|javascript:BDel(${boardCon.username},${boardCon.bno})|"><input type="button" value="삭제"></a></td>
+				<td><a th:onclick="|javascript:BUpdateProcess(${boardCon.username},${boardCon.bno})|"><button type="button">수정</button></a></td>
 			</tr>
 		</tbody>
 	</table>
 	<hr>
 
 	<div th:each="boardComment:${boardComment}">
-		<div style="border: 1px solid; margin:4px;">
-			댓글 번호<input type="hidden" th:text="${boardComment.cno}" th:value="${boardComment.cno}" name="cno" id="cno"><br>
-			작성자 <a th:text="${boardComment.bcwriter}"></a><input type="hidden"	 name="bcwriter" id="bcwriter" th:value="${boardComment.bcwriter}"><br>
-
-			내용 <a th:text="${boardComment.bccomment}"></a><br>
-			
+		<table >
+			<tr style="border: 1px solid;">
+				<td>댓글 번호</td>
+				<td>내용</td>
+				<td>작성자</td>
+			</tr>
+			<tr>
+				<td><input type="hidden" th:text="${boardComment.cno}" th:value="${boardComment.cno}" name="cno" id="cno"></td>
+				<td> <a th:text="${boardComment.bccomment}"></a></td>
+				<td> <a th:text="${boardComment.bcwriter}"></a><input type="hidden"	 name="bcwriter" id="bcwriter" th:value="${boardComment.bcwriter}"></td>
+			</tr>
+			<tr>
+			<td><a th:href="@{/commentUpdateView(cno=${boardComment.cno})}"><input type="button" value="수정"></a></td>
 			
 			<!--  th:onclick="|javascript:function(data)|를 쓰면 배열인 객체에서도 값을 받아오는게 된다!"  -->
-				<a th:href="@{/commentUpdateView(cno=${boardComment.cno})}"><input type="button" value="수정"></a>
-			<input type="button" value="삭제" th:onclick="|javascript:commentDelete(${boardComment.cno}, ${boardComment.bcwriter})|"/> 
-		</div>
+			<td><input type="button" value="삭제" th:onclick="|javascript:commentDelete(${boardComment.cno}, ${boardComment.bcwriter})|"/> </td>
+			</tr>	
+			</table>
 	</div>
 
 	<div>
@@ -65,7 +71,50 @@
 <!-- ajax script  -->
 	<script>
 		var bno = document.getElementById("bno").value;
-			
+		
+		function BUpdateProcess(username, bno){ // 게시글 수정
+			$.ajax({
+				type : 'get',
+				url : "BUpdatePrc",
+				data : {
+					"bno" : bno,
+					"username" : username,
+				},
+				success : function(data) {
+					if(data == "false"){
+						alert("권한이 없습니다");	
+					}
+					else{
+					location.href=data;
+					}
+				},
+				error : function(request, status, error) {
+				}
+			}); 
+		}
+		
+		
+		function BDel(username, bno){ // 게시글 삭제
+			$.ajax({
+				type : 'get',
+				url : "BDel",
+				data : {
+					"bno" : bno,
+					"username" : username,
+				},
+				success : function(data) {
+					if(data == "false"){
+						alert("권한이 없습니다");	
+					}
+					else{
+					location.href=data;
+					}
+				},
+				error : function(request, status, error) {
+				}
+			}); 
+		}
+		
 		function addComment() { //댓글 삽입 Ajax
 			var comment = document.getElementById("comment").value;
 			$.ajax({

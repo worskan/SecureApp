@@ -39,8 +39,9 @@ public class BoardController {
 
 	@PostMapping("/boardInput") // 게시글 삽입
 	public String boardInput(String title, String content, @AuthenticationPrincipal AccountPrincipal APcal) {
-		System.out.println(title);
-		System.out.println(content);
+		System.out.println("작성자 "+APcal.getUsername());
+		System.out.println("제목 "+title);
+		System.out.println("내용 "+content);
 		String now_username = APcal.getUsername();
 
 		Board board = new Board();
@@ -71,14 +72,31 @@ public class BoardController {
 		model.addAttribute("boardComment", boardComment);
 	}
 
-	@RequestMapping("BDel") // 게시글 삭제
-	public String Bdel(int bno) {
-		bservice.BDel(bno);
-		return "redirect:boardList";
+	
+	@ResponseBody
+	@RequestMapping("BDel") // 게시글 수정 페이지
+	public String BDel(int bno,String username, Model model, @AuthenticationPrincipal AccountPrincipal APcal) {
+		if(APcal.getUsername().equals(username)) {
+			bservice.BDel(bno);
+			return "boardList";
+		}else {
+		return "false";
+		}
 	}
+	
 
-	@RequestMapping("BUpdateView") // 게시글 수정 페이지
-	public void BUpViewGet(int bno, Model model, HttpServletRequest request) {
+	
+	@ResponseBody
+	@RequestMapping("BUpdatePrc") // 게시글 수정 페이지
+	public String BUpViewGet(int bno,String username, Model model, @AuthenticationPrincipal AccountPrincipal APcal) {
+		if(APcal.getUsername().equals(username)) {
+			return "BUpdateView?bno="+bno;
+		}
+		return "false";
+	}
+	
+	@RequestMapping("BUpdateView")
+	public void BUpdateView(String username, int bno,Model model,HttpServletRequest request) {
 		String refere = request.getHeader("referer");
 		Board updateCon = bservice.findByBno(bno);
 		model.addAttribute("refere", refere); //이전 페이지 url
@@ -86,15 +104,22 @@ public class BoardController {
 	}
 
 	@RequestMapping("BUpdate") // 게시글 수정
-	public String BUpdate(int bno, String content, String title, String username) {
+	public String BUpdate(int bno, String content, String title, String username,@AuthenticationPrincipal AccountPrincipal APcal) {
+	
 		Board board = new Board();
-		board.setBno(bno);
-		board.setContent(content);
-		board.setTitle(title);
-		board.setUsername(username);
-		bservice.inputContent(board);
-
-		return "redirect:boardList";
+		
+		if(APcal.getUsername().equals(username)) {
+			board.setBno(bno);
+			board.setContent(content);
+			board.setTitle(title);
+			board.setUsername(username);
+			bservice.inputContent(board);
+			return "redirect:boardList";
+		}
+		else {
+			return "redirect:boardList";
+		}
+		
 	}
 
 	/*---------------댓글----------------------*/
@@ -145,10 +170,7 @@ public class BoardController {
 		BoardComment boardComment = BCservice.findByCno(cno);
 		
 		model.addAttribute("refere", refere); //이전 페이지 url
-		model.addAttribute("boardComment", boardComment);
-		
-		
-		
+		model.addAttribute("boardComment", boardComment);		
 	}
 
 	@RequestMapping("/BCUpdate") // 댓글 수정 처리
