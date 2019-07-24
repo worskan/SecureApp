@@ -3,14 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<style type="text/css">
+body {
+	
+}
+</style>
 </head>
-<body>
-	<h1>여기는 메인페이지</h1>
+<body onload="startTime()">
 
+	<header th:include="header"></header>
+
+	<a href="/"><img alt="Home" th:src="@{/image/home-icon.jpg}"
+		width="30px" height="30px"></a>
+	<h1>여기는 메인페이지</h1>
+	<h3>
+		현재 시간
+		<div id="clock"></div>
+	</h3>
 	<br>
+
 
 	<a href="boardList"><button type="button">게시판</button></a>
 	<a href="userList"><button type="button">회원정보</button></a>
 	<a href="logout"><button type="button">로그아웃</button></a>
+
+	<footer th:include="footer"></footer>
 </body>
+
+<script>
+	function startTime() {
+		var today = new Date();
+		var h = today.getHours();
+		var m = today.getMinutes();
+		var s = today.getSeconds();
+		m = checkTime(m);
+		s = checkTime(s);
+		document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
+		var t = setTimeout(startTime, 500);
+	}
+	function checkTime(i) {
+		if (i < 10) {
+			i = "0" + i
+		}
+		; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
+		return i;
+	}
+</script>
+
 </html>

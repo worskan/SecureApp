@@ -49,6 +49,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 			.logoutSuccessUrl("/login").permitAll();
 		
+		//X-Frame-Options : SAMEORIGIN을 허용
+		http
+		   .headers()
+		      .frameOptions()
+		         .sameOrigin();
 	}
 
 //	@Bean

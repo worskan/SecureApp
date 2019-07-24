@@ -86,5 +86,12 @@ public class HomeController {
 		model.addAttribute("username", account);
 		System.out.println("유저 전화번호: " + account.phone);
 	}
+	
+//	@RequestMapping("header")
+//	public void header( @AuthenticationPrincipal AccountPrincipal APcal, Model model) {
+//		System.out.println("header 값: "+APcal.getUsername());
+//		model.addAttribute("UID", APcal.getUsername());
+//		
+//	}
 
 }

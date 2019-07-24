@@ -73,14 +73,16 @@ public class BoardController {
 	}
 
 	
-	@ResponseBody
-	@RequestMapping("BDel") // 게시글 수정 페이지
+	@RequestMapping("BDel") // 게시글 삭제 페이지
 	public String BDel(int bno,String username, Model model, @AuthenticationPrincipal AccountPrincipal APcal) {
+		 String data ="false";
+		 System.out.println(username+","+APcal.getUsername());
 		if(APcal.getUsername().equals(username)) {
+			
 			bservice.BDel(bno);
 			return "boardList";
 		}else {
-		return "false";
+		return data;
 		}
 	}
 	
@@ -165,7 +167,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/commentUpdateView") // 댓글 수정 페이지
-	public void commentUpdateView(int cno, Model model, HttpServletRequest request,@AuthenticationPrincipal AccountPrincipal APcal) {
+	public void commentUpdateView(int cno, Model model, HttpServletRequest request, @AuthenticationPrincipal AccountPrincipal APcal) {
 		String refere = request.getHeader("referer");
 		BoardComment boardComment = BCservice.findByCno(cno);
 		
@@ -173,18 +175,42 @@ public class BoardController {
 		model.addAttribute("boardComment", boardComment);		
 	}
 
-	@RequestMapping("/BCUpdate") // 댓글 수정 처리
-	public String BCUpdate(String bccomment, int bno, int cno,@AuthenticationPrincipal AccountPrincipal APcal, HttpServletRequest request, Model model) {
+	@ResponseBody
+	@RequestMapping("/BCUpdate") // 댓글 접근 처리
+	public String BCUpdate(int bno, int cno,String bcwriter, @AuthenticationPrincipal AccountPrincipal APcal, Model model) {
 		
-		String refere = request.getHeader("referer");
-		BoardComment boardComment = new BoardComment();
-		boardComment.setBccomment(bccomment);
-		boardComment.setBcwriter(APcal.getUsername());
-		boardComment.setBno(bno);
-		boardComment.setCno(cno);
-		BCservice.commentInsert(boardComment);
-		
-		model.addAttribute("refere", refere);
-		return "redirect:BView?bno="+bno;
+		BoardComment boardComment = BCservice.findByCno(cno);
+		System.out.println(boardComment.getBccomment());
+		if(APcal.getUsername().equals(bcwriter)) {
+			
+			BoardComment boardComment1 = new BoardComment();
+			boardComment1.setBccomment(boardComment.getBccomment());
+			boardComment1.setBcwriter(APcal.getUsername());
+			boardComment1.setBno(boardComment.getBno());
+			boardComment1.setCno(boardComment.getCno());
+			BCservice.commentInsert(boardComment);
+			return "commentUpdateView?cno="+cno;
+		}
+		else {
+			return "false";
+		}
 	}
+	
+	@RequestMapping("/BCUpdate2")
+	public String BCUpdate2(int bno, int cno,String bcwriter,String bccomment, @AuthenticationPrincipal AccountPrincipal APcal, Model model) {
+		
+		if(APcal.getUsername().equals(bcwriter)) {
+			BoardComment boardComment = new BoardComment();
+		
+			boardComment.setBccomment(bccomment);
+			boardComment.setBcwriter(APcal.getUsername());
+			boardComment.setBno(bno);
+			boardComment.setCno(cno);
+			BCservice.commentInsert(boardComment);
+			
+			model.addAttribute("bno", bno);
+			
+		}return "redirect:BView?bno="+bno;
+	}
+	
 }

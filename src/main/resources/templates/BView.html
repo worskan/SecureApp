@@ -12,7 +12,12 @@
 
 
 </head>
+
 <body>
+
+	<header th:include="header">
+	
+	</header>
 	<table>
 		<tbody th:each="boardCon:${boardCon}">
 			<input type="hidden" th:value="${boardCon.bno}" id="bno"/>
@@ -35,8 +40,8 @@
 			<tr>
 				<td><a href="boardList"><button type="button">리스트</button></a></td>
 				<td><a href="/"><button type="button">메인페이지</button></a></td>
-				<td><a th:onclick="|javascript:BDel(${boardCon.username},${boardCon.bno})|"><input type="button" value="삭제"></a></td>
-				<td><a th:onclick="|javascript:BUpdateProcess(${boardCon.username},${boardCon.bno})|"><button type="button">수정</button></a></td>
+				<td><a th:onclick="|javascript:BDel('${boardCon.username}','${boardCon.bno}')|"><input type="button" value="삭제"></a></td>
+				<td><a th:onclick="|javascript:BUpdateProcess('${boardCon.username}','${boardCon.bno}')|"><button type="button">수정</button></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -55,10 +60,10 @@
 				<td> <a th:text="${boardComment.bcwriter}"></a><input type="hidden"	 name="bcwriter" id="bcwriter" th:value="${boardComment.bcwriter}"></td>
 			</tr>
 			<tr>
-			<td><a th:href="@{/commentUpdateView(cno=${boardComment.cno})}"><input type="button" value="수정"></a></td>
+			<td><a th:onclick="|javascript:BCUpdate('${boardComment.cno}','${boardComment.bno}' ,'${boardComment.bcwriter}')|"><input type="button" value="수정"></a></td>
 			
 			<!--  th:onclick="|javascript:function(data)|를 쓰면 배열인 객체에서도 값을 받아오는게 된다!"  -->
-			<td><input type="button" value="삭제" th:onclick="|javascript:commentDelete(${boardComment.cno}, ${boardComment.bcwriter})|"/> </td>
+			<td><input type="button" value="삭제" th:onclick="|javascript:commentDelete('${boardComment.cno}', '${boardComment.bcwriter}')|"/> </td>
 			</tr>	
 			</table>
 	</div>
@@ -71,6 +76,8 @@
 <!-- ajax script  -->
 	<script>
 		var bno = document.getElementById("bno").value;
+		
+		
 		
 		function BUpdateProcess(username, bno){ // 게시글 수정
 			$.ajax({
@@ -95,6 +102,7 @@
 		
 		
 		function BDel(username, bno){ // 게시글 삭제
+			alert(username,bno)
 			$.ajax({
 				type : 'get',
 				url : "BDel",
@@ -140,8 +148,8 @@
 					type : 'post',
 					url : "deleteComment",
 					data : {
-						"bno" : bno,
 						"cno" : cno,
+						"bno" : bno,
 						"bcwriter" : bcwriter
 					},
 					success : function(data) {
@@ -156,6 +164,30 @@
 					}
 				}); 
 		} 
+	 	
+	 	function BCUpdate(cno, bno,bcwriter) { //댓글 수정 Ajax
+	 		var ua = window.navigator.userAgent;
+	 	alert(ua);
+		 	 $.ajax({
+						type : 'get',
+						url : "BCUpdate",
+						data : {
+							"bno" : bno,
+							"cno" : cno,
+							"bcwriter" : bcwriter
+						},
+						success : function(data) {
+							if(data == "false"){
+								alert("권한이 없습니다");	
+							}
+							else{
+							location.href=data;
+							}
+						},
+						error : function(request, status, error) {
+						}
+					}); 
+			} 
 	 	
 		
 	</script>

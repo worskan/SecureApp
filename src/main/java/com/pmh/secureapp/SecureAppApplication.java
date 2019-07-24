@@ -23,7 +23,7 @@ import com.pmh.Repositories.BoardRepository;
 @SpringBootApplication
 @Configuration
 @EntityScan("com.pmh.Domains")
-@ComponentScan({ "com.pmh.Controllers", "com.pmh.Service", "com.pmh,secureapp" })
+@ComponentScan({ "com.pmh.Controllers", "com.pmh.Service", "com.pmh,secureapp", "com.pmh.WebSocket" })
 @EnableJpaRepositories("com.pmh.Repositories")
 public class SecureAppApplication implements CommandLineRunner, WebMvcConfigurer {
 
